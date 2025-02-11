@@ -1,7 +1,13 @@
+import io
+import os
 import subprocess
 
 from setuptools import setup, Extension
 
+here = os.path.abspath(os.path.dirname(__file__))
+
+with io.open(os.path.join(here, "README.md"), encoding="utf-8") as f:
+    long_description = f.read()
 
 def get_pkg_config_flags(package, flag):
     try:
@@ -32,7 +38,9 @@ module = Extension(
 
 setup(
     name="pydn2",
-    version="0.0.2",
+    version="0.0.3",
     description="Python binding for libidn2",
+    long_description=long_description,
+    long_description_content_type="text/markdown",
     ext_modules=[module],
 )
