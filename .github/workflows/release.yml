@@ -22,7 +22,7 @@ jobs:
           python -m pip install --upgrade pip setuptools wheel build twine
 
       - name: Build distributions
-        run: python -m build --sdist --wheel
+        run: python -m build --sdist
 
       - name: Publish to PyPI
         env:
