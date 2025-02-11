@@ -3,7 +3,7 @@ from setuptools import setup, Extension
 
 module = Extension(
     "pydn2",                  # Module name
-    sources=["pydn2.c"],  # Source file(s)
+    sources=["src/pydn2.c"],  # Source file(s)
     libraries=["idn2"],         # Link against libidn2 (make sure it's installed on your system)
 )
 

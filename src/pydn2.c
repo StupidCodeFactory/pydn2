@@ -1,60 +1,196 @@
-// idn2module.c
 #include <Python.h>
-#include <idn2.h>     // libidn2 header
-#include <stdlib.h>   // For free()
+#include <idn2.h>
+#include <stdlib.h>
 
-// Wrapper for idn2_to_ascii.
-// Python signature: idn2.to_ascii(input_string, flags=0)
-static PyObject* py_idn2_to_ascii(PyObject *self, PyObject *args) {
-    const char *input;
-    unsigned int flags = 0;
-
-    // Parse the Python arguments: a required string and an optional unsigned int (flags)
-    if (!PyArg_ParseTuple(args, "s|I", &input, &flags)) {
-        return NULL;  // If parsing fails, return NULL to signal an error.
-    }
-
-    char *output = NULL;
-    int ret = idn2_to_ascii(input, &output, flags);
-    if (ret != IDN2_OK) {
-        // If libidn2 reports an error, set a Python RuntimeError.
-        PyErr_Format(PyExc_RuntimeError, "idn2_to_ascii failed with error code: %d", ret);
-        return NULL;
-    }
-
-    // Create a Python Unicode object from the output C string.
-    PyObject *result = PyUnicode_FromString(output);
-
-    // Free the memory allocated by libidn2 (which typically uses malloc)
-    free(output);
-
-    return result;
+static PyObject *py_idn2_to_ascii_8z(PyObject *self, PyObject *args) {
+  const char *input;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
+    return NULL;
+  char *output = NULL;
+  int ret = idn2_to_ascii_8z(input, &output, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
+    return NULL;
+  }
+  PyObject *result = PyUnicode_FromString(output);
+  free(output);
+  return result;
 }
 
-// Method definitions for the module.
-// Each entry maps a Python function name to the corresponding C function.
-static PyMethodDef Idn2Methods[] = {
-    {"to_ascii", py_idn2_to_ascii, METH_VARARGS,
-     "Convert an internationalized domain name to ASCII using libidn2.\n\n"
-     "Parameters:\n"
-     "  input (str): The domain name to convert.\n"
-     "  flags (int, optional): Flags for conversion (default is 0).\n\n"
-     "Returns:\n"
-     "  str: The ASCII version of the domain name."},
-    {NULL, NULL, 0, NULL}  // Sentinel indicating the end of the array.
-};
+static PyObject *py_idn2_to_unicode_8z8z(PyObject *self, PyObject *args) {
+  const char *input;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
+    return NULL;
+  char *output = NULL;
+  int ret = idn2_to_unicode_8z8z(input, &output, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
+    return NULL;
+  }
+  if (output == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(output);
+  free(output);
+  return result;
+}
 
-// Module definition.
-static struct PyModuleDef idn2module = {
-    PyModuleDef_HEAD_INIT,
-    "idn2",                     // Module name
-    "Python binding for libidn2", // Module documentation
-    -1,                         // Size of per-interpreter state of the module (-1 means global state)
-    Idn2Methods                 // The methods defined in this module
-};
+static PyObject *py_idn2_register_u8(PyObject *self, PyObject *args) {
+  const char *ulabel = NULL;
+  const char *alabel = NULL;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "zz|I", &ulabel, &alabel, &flags))
+    return NULL;
+  char *insertname = NULL;
+  int ret = idn2_register_u8((const uint8_t *)ulabel, (const uint8_t *)alabel,
+                             (uint8_t **)&insertname, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
+    return NULL;
+  }
+  if (insertname == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(insertname);
+  free(insertname);
+  return result;
+}
 
-// Module initialization function.
-// This function is called when Python imports the module.
-PyMODINIT_FUNC PyInit_idn2(void) {
-    return PyModule_Create(&idn2module);
+static PyObject *py_idn2_to_ascii_lz(PyObject *self, PyObject *args) {
+  const char *input;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
+    return NULL;
+  char *output = NULL;
+  int ret = idn2_to_ascii_lz(input, &output, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
+    return NULL;
+  }
+  if (output == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(output);
+  free(output);
+  return result;
+}
+
+static PyObject *py_idn2_to_unicode_8zlz(PyObject *self, PyObject *args) {
+  const char *input;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
+    return NULL;
+  char *output = NULL;
+  int ret = idn2_to_unicode_8zlz(input, &output, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
+    return NULL;
+  }
+  if (output == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(output);
+  free(output);
+  return result;
+}
+
+static PyObject *py_idn2_to_unicode_lzlz(PyObject *self, PyObject *args) {
+  const char *input;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
+    return NULL;
+  char *output = NULL;
+  int ret = idn2_to_unicode_lzlz(input, &output, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
+    return NULL;
+  }
+  if (output == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(output);
+  free(output);
+  return result;
+}
+
+static PyObject *py_idn2_lookup_ul(PyObject *self, PyObject *args) {
+  const char *src;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "s|I", &src, &flags))
+    return NULL;
+  char *lookupname = NULL;
+  int ret = idn2_lookup_ul(src, &lookupname, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "idn2_lookup_ul error: %d", ret);
+    return NULL;
+  }
+  if (lookupname == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(lookupname);
+  free(lookupname);
+  return result;
+}
+
+static PyObject *py_idn2_register_ul(PyObject *self, PyObject *args) {
+  const char *ulabel = NULL;
+  const char *alabel = NULL;
+  unsigned int flags = 0;
+  if (!PyArg_ParseTuple(args, "zz|I", &ulabel, &alabel, &flags))
+    return NULL;
+  char *insertname = NULL;
+  int ret = idn2_register_ul(ulabel, alabel, &insertname, flags);
+  if (ret != IDN2_OK) {
+    PyErr_Format(PyExc_RuntimeError, "idn2_register_ul error: %d", ret);
+    return NULL;
+  }
+  if (insertname == NULL)
+    Py_RETURN_NONE;
+  PyObject *result = PyUnicode_FromString(insertname);
+  free(insertname);
+  return result;
+}
+
+static PyObject *py_idn2_strerror(PyObject *self, PyObject *args) {
+  int rc;
+  if (!PyArg_ParseTuple(args, "i", &rc))
+    return NULL;
+  const char *msg = idn2_strerror(rc);
+  return PyUnicode_FromString(msg);
+}
+
+static PyObject *py_idn2_strerror_name(PyObject *self, PyObject *args) {
+  int rc;
+  if (!PyArg_ParseTuple(args, "i", &rc))
+    return NULL;
+  const char *name = idn2_strerror_name(rc);
+  return PyUnicode_FromString(name);
+}
+
+static PyMethodDef pydn2_methods[] = {
+    {"to_ascii_8z", py_idn2_to_ascii_8z, METH_VARARGS, NULL},
+    {"to_unicode_lzlz", py_idn2_to_unicode_lzlz, METH_VARARGS, NULL},
+    {"to_unicode_8z8z", py_idn2_to_unicode_8z8z, METH_VARARGS, NULL},
+    {"register_u8", py_idn2_register_u8, METH_VARARGS, NULL},
+    {"to_ascii_lz", py_idn2_to_ascii_lz, METH_VARARGS, NULL},
+    {"to_unicode_8zlz", py_idn2_to_unicode_8zlz, METH_VARARGS, NULL},
+    {"to_unicode_lzlz", py_idn2_to_unicode_lzlz, METH_VARARGS, NULL},
+    {"lookup_ul", py_idn2_lookup_ul, METH_VARARGS, NULL},
+    {"register_ul", py_idn2_register_ul, METH_VARARGS, NULL},
+    {"strerror", py_idn2_strerror, METH_VARARGS, NULL},
+    {"strerror_name", py_idn2_strerror_name, METH_VARARGS, NULL},
+    {NULL, NULL, 0, NULL}};
+
+static struct PyModuleDef pydn2_module = {PyModuleDef_HEAD_INIT, "pydn2", NULL,
+                                          -1, pydn2_methods};
+
+PyMODINIT_FUNC PyInit_pydn2(void) {
+  PyObject *module = PyModule_Create(&pydn2_module);
+    if (module == NULL)
+        return NULL;
+
+  PyModule_AddIntConstant(module, "IDN2_NFC_INPUT", IDN2_NFC_INPUT);
+  PyModule_AddIntConstant(module, "IDN2_ALABEL_ROUNDTRIP", IDN2_ALABEL_ROUNDTRIP);
+  PyModule_AddIntConstant(module, "IDN2_TRANSITIONAL", IDN2_TRANSITIONAL);
+  PyModule_AddIntConstant(module, "IDN2_NONTRANSITIONAL", IDN2_NONTRANSITIONAL);
+  PyModule_AddIntConstant(module, "IDN2_NO_TR46", IDN2_NO_TR46);
+  PyModule_AddIntConstant(module, "IDN2_USE_STD3_ASCII_RULES", IDN2_USE_STD3_ASCII_RULES);
+
+  return module;
 }
