@@ -32,7 +32,7 @@ module = Extension(
 
 setup(
     name="pydn2",
-    version="0.1.0",
+    version="0.0.1",
     description="Python binding for libidn2",
     ext_modules=[module],
 )
