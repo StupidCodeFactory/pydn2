@@ -1,0 +1,36 @@
+name: CI
+
+on:
+  push:
+    branches: [ main ]
+  pull_request:
+    branches: [ main ]
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        python-version: ['3.9', '3.10', '3.11', '3.12']
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v3
+
+      - name: Install libidn2
+        run: sudo apt-get update && sudo apt-get -y install libidn2-0 libidn2-dev
+
+      - name: Set up Python ${{ matrix.python-version }}
+        uses: actions/setup-python@v4
+        with:
+          python-version: ${{ matrix.python-version }}
+
+      - name: Upgrade pip and install dependencies
+        run: |
+          python -m pip install --upgrade pip setuptools wheel
+          pip install pytest
+
+      - name: Build pydn2 extension
+        run: python setup.py install
+
+      - name: Run tests
+        run: pytest
