@@ -1,3 +1,32 @@
 [build-system]
 requires = ["setuptools>=42", "wheel"]
 build-backend = "setuptools.build_meta"
+
+[project]
+name = "pydn2"
+description = "Thin wrapper around libidn2"
+authors = [{ name = "StupidCodeFactory", email = "ymarquet@gmail.com" }]
+license = { text = "MIT" }
+readme = "README.md"
+keywords = ["libidn2", "idn2", "IDN2008"]
+requires-python = ">=3.9"
+dynamic = ["version"]
+
+[project.urls]
+Homepage = "https://github.com/StupidCodeFactory/pydn2"
+Documentation = "https://github.com/StupidCodeFactory/pydn2/blob/main/tests/test_pydn2.py"
+Repository = "https://github.com/StupidCodeFactory/pydn2"
+Changelog = "https://github.com/StupidCodeFactory/pydn2/releases"
+
+[tool.black]
+line-length = 100
+target-version = ["py39", "py310", "py311", "py312"]
+
+
+[tool.setuptools.packages.find]
+where = ["src"]
+include = ["pydn2*"]
+namespaces = false
+
+[tool.setuptools.dynamic]
+version = { attr = "pydn2.__version__" }
