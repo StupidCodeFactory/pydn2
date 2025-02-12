@@ -16,12 +16,16 @@
 ## Requirements
 
 - **libidn2**
-  Make sure [libidn2](https://libidn.gitlab.io/libidn2/) is installed on your system. On macOS with Homebrew, you can install it via:
+  Make sure [libidn2](https://www.gnu.org/software/libidn/libidn2/manual/libidn2.html) is installed on your system. On macOS with Homebrew, you can install it via:
   ```bash
   brew install libidn2
   ```
+  On linux debian based system:
+  ```bash
+  sudo apt-get -y install libidn2-0 libidn2-dev
+  ```
 - A C compiler that supports building Python C extensions.
-- Python 3.7–3.9 (and possibly newer versions if you update the CI matrix).
+- Python 3.9–3.12 (and possibly newer versions if you update the CI matrix).
 
 ## Installation
 
