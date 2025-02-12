@@ -8,7 +8,10 @@ static PyObject *py_idn2_to_ascii_8z(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
     return NULL;
   char *output = NULL;
-  int ret = idn2_to_ascii_8z(input, &output, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS;
+  ret = idn2_to_ascii_8z(input, &output, flags);
+  Py_END_ALLOW_THREADS;
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
     return NULL;
@@ -24,7 +27,10 @@ static PyObject *py_idn2_to_unicode_8z8z(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
     return NULL;
   char *output = NULL;
-  int ret = idn2_to_unicode_8z8z(input, &output, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS;
+  ret = idn2_to_unicode_8z8z(input, &output, flags);
+  Py_END_ALLOW_THREADS;
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
     return NULL;
@@ -43,8 +49,11 @@ static PyObject *py_idn2_register_u8(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "zz|I", &ulabel, &alabel, &flags))
     return NULL;
   char *insertname = NULL;
-  int ret = idn2_register_u8((const uint8_t *)ulabel, (const uint8_t *)alabel,
+  int ret;
+  Py_BEGIN_ALLOW_THREADS
+  ret = idn2_register_u8((const uint8_t *)ulabel, (const uint8_t *)alabel,
                              (uint8_t **)&insertname, flags);
+  Py_END_ALLOW_THREADS;
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
     return NULL;
@@ -62,7 +71,10 @@ static PyObject *py_idn2_to_ascii_lz(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
     return NULL;
   char *output = NULL;
-  int ret = idn2_to_ascii_lz(input, &output, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS
+  ret = idn2_to_ascii_lz(input, &output, flags);
+  Py_END_ALLOW_THREADS;
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
     return NULL;
@@ -80,7 +92,11 @@ static PyObject *py_idn2_to_unicode_8zlz(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
     return NULL;
   char *output = NULL;
-  int ret = idn2_to_unicode_8zlz(input, &output, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS;
+  ret = idn2_to_unicode_8zlz(input, &output, flags);
+  Py_END_ALLOW_THREADS;
+
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
     return NULL;
@@ -98,7 +114,11 @@ static PyObject *py_idn2_to_unicode_lzlz(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "s|I", &input, &flags))
     return NULL;
   char *output = NULL;
-  int ret = idn2_to_unicode_lzlz(input, &output, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS;
+  ret = idn2_to_unicode_lzlz(input, &output, flags);
+  Py_END_ALLOW_THREADS;
+
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "%s: %s", idn2_strerror_name(ret), idn2_strerror(ret));
     return NULL;
@@ -116,7 +136,11 @@ static PyObject *py_idn2_lookup_ul(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "s|I", &src, &flags))
     return NULL;
   char *lookupname = NULL;
-  int ret = idn2_lookup_ul(src, &lookupname, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS;
+  ret = idn2_lookup_ul(src, &lookupname, flags);
+  Py_END_ALLOW_THREADS;
+
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "idn2_lookup_ul error: %d", ret);
     return NULL;
@@ -135,7 +159,11 @@ static PyObject *py_idn2_register_ul(PyObject *self, PyObject *args) {
   if (!PyArg_ParseTuple(args, "zz|I", &ulabel, &alabel, &flags))
     return NULL;
   char *insertname = NULL;
-  int ret = idn2_register_ul(ulabel, alabel, &insertname, flags);
+  int ret;
+  Py_BEGIN_ALLOW_THREADS;
+  ret = idn2_register_ul(ulabel, alabel, &insertname, flags);
+  Py_END_ALLOW_THREADS;
+
   if (ret != IDN2_OK) {
     PyErr_Format(PyExc_RuntimeError, "idn2_register_ul error: %d", ret);
     return NULL;
@@ -177,10 +205,10 @@ static PyMethodDef pydn2_methods[] = {
     {"strerror_name", py_idn2_strerror_name, METH_VARARGS, NULL},
     {NULL, NULL, 0, NULL}};
 
-static struct PyModuleDef pydn2_module = {PyModuleDef_HEAD_INIT, "pydn2", NULL,
+static struct PyModuleDef pydn2_module = {PyModuleDef_HEAD_INIT, "pydn2._pydn2", NULL,
                                           -1, pydn2_methods};
 
-PyMODINIT_FUNC PyInit_pydn2(void) {
+PyMODINIT_FUNC PyInit__pydn2(void) {
   PyObject *module = PyModule_Create(&pydn2_module);
     if (module == NULL)
         return NULL;

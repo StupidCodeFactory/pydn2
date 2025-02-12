@@ -60,3 +60,11 @@ The extension exposes several flag constants for controlling conversion behavior
 - IDN2_NONTRANSITIONAL – Perform Unicode TR46 non-transitional processing (default).
 - IDN2_NO_TR46 – Disable any TR46 transitional or non-transitional processing.
 - IDN2_USE_STD3_ASCII_RULES – Use STD3 ASCII rules.
+
+
+## Benchmark
+
+| Method                    | Conversion Output | Single-thread Benchmark (sec, 1,000,000 iterations) | Multi-thread Benchmark (sec, 1,000,000 iterations) |
+|---------------------------|-------------------|----------------------------------------------------:|---------------------------------------------------:|
+| **pydn2 (IDNA2008/TR46)** | `xn--i-n3p.com`   |                                            1.170304 |                                           1.156370 |
+| **builtin (IDNA2003)**    | `xn--i-n3p.com`   |                                            6.716825 |                                           6.674858 |
