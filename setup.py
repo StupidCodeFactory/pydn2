@@ -38,7 +38,7 @@ module = Extension(
 
 setup(
     name="pydn2",
-    version="0.0.3",
+    version="0.0.5",
     description="Python binding for libidn2",
     long_description=long_description,
     long_description_content_type="text/markdown",
